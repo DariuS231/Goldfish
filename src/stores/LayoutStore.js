@@ -7,50 +7,50 @@ import assign from 'object-assign';
 let _current = DefaultConstants.DEFAULT_CURRENT_LAYOUT;
 let _available = DefaultConstants.DEFAULT_AVAILABLE_LAYOUT;
 
-function setPeopleSearchLayout (layout) {
+function setPeopleSearchLayout(layout) {
   _current = layout.current;
   _available = layout.available;
 }
 
 const LayoutStore = assign({}, EventEmitter.prototype, {
-  getLayout () {
+  getLayout() {
     return {
-        available: _available,
-        current: _current
+      available: _available,
+      current: _current,
     };
   },
 
-  getAvailableFields () {
+  getAvailableFields() {
     return _available;
   },
 
-  getCurrentFields () {
+  getCurrentFields() {
     return _current;
   },
 
-  emitChange () {
+  emitChange() {
     this.emit(DefaultConstants.CHANGE_EVENT);
   },
 
-  addChangeListener (callback) {
+  addChangeListener(callback) {
     this.on(DefaultConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener (callback) {
+  removeChangeListener(callback) {
     this.removeListener(DefaultConstants.CHANGE_EVENT, callback);
-  }
+  },
 });
 
 AppDispatcher.register(action => {
   switch (action.actionType) {
-    case PeopleSearchConstants.GOT_LAYOUT:
-    case PeopleSearchConstants.LAYOUT_CHANGED:
-      setPeopleSearchLayout(
+  case PeopleSearchConstants.GOT_LAYOUT:
+  case PeopleSearchConstants.LAYOUT_CHANGED:
+    setPeopleSearchLayout(
           action.results
       );
-      LayoutStore.emitChange();
-      break;
-    default:
+    LayoutStore.emitChange();
+    break;
+  default:
       // no op
   }
 });
